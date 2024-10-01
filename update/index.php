@@ -8,10 +8,12 @@
             $input_data = json_decode(file_get_contents('php://input'));
             if($user != null)
             {
+                
                 foreach($input_data as $key=>$value)
                 {
                     $user->data[$key] = $value;
                 }
+                
                 $user->save();
             
                 $ctx['result'] = array("users" => $user->json());

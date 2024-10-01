@@ -1,5 +1,10 @@
 <?php
-    
+    if($ctx == null)    
+    {
+        echo json_encode(array('a'=>1));
+        exit();
+    }
+
     $ctx['result'] = array('users' => array());
     
     if($params[1] == "" || $params[1] === null)
@@ -24,6 +29,7 @@
         }
         else
         {
+            $ctx['success'] = false;
             $ctx['result'] = array('error' => 'no such user');
         }
     }

@@ -76,8 +76,11 @@
         
         public static function create($data)
         {
-            $role_id = User::get_roles($name=$data['role'])['id'];
-            $sql = 'INSERT into users(full_name, role_id, efficiency) VALUES ("'.$data["full_name"].'", '.$role_id.', '.$data["efficiency"].')';
+            
+            $role = User::get_roles($name=$data->role);
+            $role_id = intval($role["id"]);
+            
+            $sql = 'INSERT INTO users (full_name, role_id, efficiency) VALUES ("'.$data->full_name.'", '.$role_id.', '.$data->efficiency.')';
             $result = $GLOBALS['connect']->query($sql);
             
             return $GLOBALS['connect']->insert_id;
