@@ -10,6 +10,46 @@
             }
         }
         
+        public static function validate($data)
+        {
+            $status = true;
+            $fields = array(
+                "full_name" => array('type'=>'string', 'min_length'=> 3,'max_length'=>64),
+                "efficiency" => array('type'=>'integer'),
+                "role" => array('type'=>'string', 'min_length'=> 3, 'max_length'=>32),
+            );
+            
+            foreach($fields as $key=>$value)
+            {
+                if($data[$key])
+                {
+                    
+                    if(''.gettype($data[$key]) == $fields[$key]['type'])
+                    {
+                        if($fields[$key]['max_length'])
+                        {
+                            if(strlen(''.$data[$key]) > $fields[$key]['max_length'])
+                            {
+                                return false;
+                            }
+                        }
+                        if($fields[$key]['min_length'])
+                        {
+                            if(strlen(''.$data[$key]) < $fields[$key]['min_length'])
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                    else{
+                        return false;
+                    }
+                }
+            }
+            
+            return $status;
+        }
+        
         static function get_roles($name=null, $simple=true)
         {
             $sql = 'SELECT * FROM roles';
@@ -77,6 +117,12 @@
         public static function create($data)
         {
             
+            $is_validated = User::validate((array) $data);
+            if(!$is_validated)
+            {
+                return false;
+            }
+            
             $role = User::get_roles($name=$data->role);
             $role_id = intval($role["id"]);
             
@@ -98,6 +144,12 @@
         
         function save()
         {
+            $is_validated = User::validate((array) $this->data);
+            if(!$is_validated)
+            {
+                return false;
+            }
+            
             $role_id = User::get_roles($this->data['role'])['id'];
             
             $sql = 'UPDATE users SET full_name="'.$this->data['full_name'].'", role_id='.$role_id.', efficiency='.$this->data['efficiency'].' WHERE id='.$this->data['id'];

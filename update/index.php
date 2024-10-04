@@ -14,9 +14,14 @@
                     $user->data[$key] = $value;
                 }
                 
-                $user->save();
-            
-                $ctx['result'] = array("users" => $user->json());
+                if($user->save() == false)
+                {
+                    $ctx['success'] = false;
+                    $ctx['result'] = array('error'=> 'no valid data');
+                } 
+                else{
+                    $ctx['result'] = array("users" => $user->json());
+                }
             }
             else{
                 $ctx['success'] = false;

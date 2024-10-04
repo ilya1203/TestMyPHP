@@ -1,9 +1,4 @@
 <?php
-    if($ctx == null)    
-    {
-        echo json_encode(array('a'=>1));
-        exit();
-    }
 
     $ctx['result'] = array('users' => array());
     

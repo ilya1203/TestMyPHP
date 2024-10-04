@@ -7,7 +7,15 @@
         if($input_data)
         {
             $result = User::create($input_data);
-            $ctx['result'] = array('id'=>$result);
+            if($result != false)
+            {
+                $ctx['result'] = array('id'=>$result);
+            }
+            else
+            {
+                $ctx['result'] = array('error' => 'no valid data');
+                $ctx['success'] = false;
+            }
         }
         else{
             $ctx['success'] = false;
